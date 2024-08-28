@@ -1,0 +1,63 @@
+#include <stdio.h>
+#include <string.h>
+
+typedef struct{
+	char item[21];
+} lista;
+
+void insertion(lista *listaCompras, unsigned short tam);
+
+void main (){
+
+	unsigned short casos, i, j;
+	lista listadeCompras[1010];
+	char item[20010], *cadaItem;
+
+	scanf("%hu", &casos);
+
+	while (casos--){
+		scanf(" %[^\n]", item);
+		i = 0;
+		cadaItem = strtok(item, " ");
+		strcpy(listadeCompras[i++].item, cadaItem);
+
+		do{
+			cadaItem = strtok('\0', " ");
+			if (cadaItem == NULL)
+				break;
+
+			strcpy(listadeCompras[i].item, cadaItem);
+			i++;
+} while (cadaItem);
+
+		insertion(listadeCompras, i);
+
+		for (j = 0; j < i; j++){
+			if (strcmp(listadeCompras[j].item, listadeCompras[j - 1].item) != 0){
+				if (j != 0 && j != i)
+					printf(" ");
+
+				printf("%s", listadeCompras[j].item);
+			}
+		}
+		printf("\n");
+		memset(listadeCompras, 0, sizeof(listadeCompras));
+		memset(item, 0, sizeof(item));
+	}
+}
+void insertion(lista *listadeCompras, unsigned short tam){
+	short i = 1, j;
+	lista pivo;
+
+	while (i < tam){
+		j = i - 1;
+		pivo = listadeCompras[i];
+
+		while (j >= 0 && strcmp(listadeCompras[j].item, pivo.item) > 0){
+			listadeCompras[j + 1] = listadeCompras[j];
+			j--;
+		}
+		listadeCompras[j + 1] = pivo;
+		i++;
+	}
+}
